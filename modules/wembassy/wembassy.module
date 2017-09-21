@@ -1,0 +1,17 @@
+<?php
+
+/**
+* Implements hook_theme
+*/
+function wembassy_theme($existing, $type, $theme, $path) {
+  return [
+    'wembassy_breakpoint_form' => [
+      'render element' => 'form',
+      'template' => 'wembassy-breakpoint-form'
+    ],
+    'wembassy_backend_template' => [
+      'render element' => 'form',
+      'template' => 'wembassy-backend-template'
+    ]
+  ];
+}

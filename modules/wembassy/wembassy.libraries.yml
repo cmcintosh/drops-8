@@ -1,0 +1,75 @@
+spectrum:
+  version: 1.x
+  css:
+    theme:
+      assets/library/spectrum/spectrum.css: {}
+  js:
+    assets/library/spectrum/spectrum.js: {}
+
+font-awesome:
+  version: 4.x
+  css:
+    theme:
+      assets/library/font-awesome/css/font-awesome.css: {}
+
+ruler:
+  version: 1.x
+  css:
+    theme:
+      assets/library/ruler/ruler.css: {}
+  js:
+    assets/library/ruler/jquery.ruler.js: {}
+
+formBuilder:
+  version: 2.9.6
+  css:
+    theme:
+      https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.css: {}
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.js: {}
+    assets/library/formBuilder/dist/form-builder.min.js: {}
+    assets/library/formBuilder/dist/form-render.min.js: {}
+
+sticky:
+  version: 1.0
+  js:
+    assets/library/sticky/jquery.sticky.js: {}
+
+wembassy_backend_layout:
+  versiion: 1.x
+  js:
+    assets/js/layouts/backend_admin.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/jquery.ui
+    - core/jquery.ui.sortable
+    - wembassy/formBuilder
+    - wembassy/wembassy_admin
+    - wembassy/sticky
+
+wembassy_color:
+  version: 1.x
+  js:
+    assets/js/colors/admin.js: {}
+  dependencies:
+    - wembassy/wembassy_admin
+    - wembassy/spectrum
+
+wembassy_breakpoints:
+  version: 1.x
+  js:
+    assets/js/breakpoints/admin.js: {}
+  dependencies:
+    - wembassy/wembassy_admin
+
+wembassy_admin:
+  version: 1.x
+  css:
+    theme:
+      assets/css/wembassy.admin.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+    - wembassy/ruler
+    - wembassy/formBuilder

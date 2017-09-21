@@ -1,0 +1,14 @@
+access wembassy:
+  title: 'Administer Wembassy'
+
+administer wembassy_fonts:
+  title: 'Manage Fonts'
+
+administer wembassy_colors:
+  title: 'Manage Colors'
+
+administer wembassy_breakpoints:
+  title: 'Manage Breakpoints'
+
+administer wembassy_templates:
+  title: 'Manage Templates'
