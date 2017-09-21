@@ -1,0 +1,6 @@
+wembassy.admin:
+  title: Wembassy
+  route_name: wembassy.admin
+  description: 'Wembassy site building tool.'
+  parent: system.admin
+  weight: 10

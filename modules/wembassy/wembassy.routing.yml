@@ -1,0 +1,59 @@
+wembassy.admin:
+  path: '/admin/wembassy'
+  defaults:
+    _title: 'Wembassy'
+    _controller: '\Drupal\wembassy\Controller\WembassyInfoController::overview'
+  requirements:
+    _permission: 'access wembassy'
+
+# Font related links.
+wembassy.fonts.admin:
+  path: '/admin/wembassy/fonts'
+  defaults:
+    _title: 'Fonts'
+    _form: '\Drupal\wembassy\Form\FontAdminManageForm'
+  requirements:
+    _permission: 'administer wembassy_fonts'
+
+# Color related links
+wembassy.colors.admin:
+  path: '/admin/wembassy/colors'
+  defaults:
+    _title: 'Colors'
+    _form: '\Drupal\wembassy\Form\ColorAdminManageForm'
+  requirements:
+    _permission: 'administer wembassy_colors'
+
+# Breakpoint related links
+wembassy.breakpoint.admin:
+  path: '/admin/wembassy/breakpoints'
+  defaults:
+    _title: 'Breakpoints'
+    _form: '\Drupal\wembassy\Form\BreakpointAdminManageForm'
+  requirements:
+    _permission: 'administer wembassy_breakpoints'
+
+# Template related links
+entity.template.collection:
+  path: '/admin/wembassy/templates'
+  defaults:
+    _title: 'Templates'
+    _entity_list: 'template'
+  requirements:
+    _permission: 'administer wembassy_templates'
+
+entity.template.add_form:
+  path: '/admin/wembassy/templates/add'
+  defaults:
+    _entity_form: 'template.add'
+    _title: 'Create Template'
+  requirements:
+    _permission: 'administer wembassy_templates'
+
+entity.template.edit_form:
+  path: '/admin/wembassy/templates/{template}/edit'
+  defaults:
+    _entity_form: 'template.edit'
+    _title: 'Edit Template'
+  requirements:
+    _permission: 'administer wembassy_templates'
