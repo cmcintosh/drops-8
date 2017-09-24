@@ -100,3 +100,13 @@ fieldset:not(.fieldgroup) > legend {
     height: 200px;
     min-width:15px;
 }
+
+
+/**
+* Form Builder related.
+*/
+#layout-canvas .cb-wrap {
+    position: fixed;
+    top: 125px;
+    right: 0px;
+}

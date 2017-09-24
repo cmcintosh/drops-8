@@ -1,0 +1,12 @@
+- create install profile that sets up the site for use with the
+grapejs site builder tool
+
+-- remove all blocks from all regions...
+-- have a single region?
+-- Starting components:
+--- Dynamic Block component (discovers block plugins and creates DnD elements for them)
+--- Dynamic View Component (discovers views and creates DnD elements for them)
+--- Page elements
+---- Breadcrumbs
+---- Page Title
+---- Navigations, Local Tasks, Local Actions

@@ -30,6 +30,61 @@ formBuilder:
     assets/library/formBuilder/dist/form-builder.min.js: {}
     assets/library/formBuilder/dist/form-render.min.js: {}
 
+siteBuilder:
+  version: 0.1
+  css:
+    theme:
+      assets/css/wembassy.site_builder.css: {}
+  js:
+    assets/js/wembassy.site_builder.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/jquery.ui
+    - core/jquery.ui.sortable
+    - wembassy/grapejs
+
+perfectScrollbar:
+  version: 0.1
+  css:
+    theme:
+      assets/library/perfect-scrollbar/perfect-scrollbar.css: {}
+  js:
+    assets/library/perfect-scrollbar/perfect-scrollbar.min.js: {}
+
+grapesjs-preset-webpage:
+  version: 0.1
+  css:
+    theme:
+      assets/library/grapesjs-preset-webpage/grapesjs-preset-webpage.css: {}
+  js:
+    assets/library/grapesjs-preset-webpage/grapesjs-preset-webpage.js: {}
+
+grapejs:
+  version: 0.10.7
+  css:
+    theme:
+      assets/library/grapesjs/dist/css/grapes.min.css: {}
+  js:
+    assets/library/grapesjs/dist/grapes.min.js: {}
+    assets/library/grapesjs-aviary/dist/grapesjs-aviary.min.js: {}
+    assets/library/grapesjs-navbar/dist/grapesjs-navbar.min.js: {}
+    assets/library/grapesjs-plugin-ckeditor/dist/grapesjs-plugin-ckeditor.min.js: {}
+    assets/library/grapesjs-plugin-export/dist/grapesjs-plugin-export.min.js: {}
+    assets/library/grapesjs-plugin-filestack/dist/grapesjs-plugin-filestack.min.js: {}
+    assets/library/grapesjs-plugin-forms/dist/grapesjs-plugin-forms.min.js: {}
+    assets/library/grapesjs-component-countdown/dist/grapesjs-component-countdown.min.js: {}
+    assets/library/grapesjs-preset-webpage/grapesjs-preset-webpage.js: {}
+    assets/library/grapesjs-blocks-basic/dist/grapesjs-blocks-basic.min.js: {}
+    assets/library/toastr/toastr.min.js: {}
+    //static.filestackapi.com/v3/filestack-0.1.12.js: {}
+    //feather.aviary.com/imaging/v3/editor.js: {}
+  dependencies:
+    - core/jquery
+    - wembassy/perfectScrollbar
+    - wembassy/grapesjs-preset-webpage
+    - wembassy/grapesjs-blocks-basic
+
 sticky:
   version: 1.0
   js:
