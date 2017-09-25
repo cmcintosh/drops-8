@@ -58,10 +58,10 @@ entity.template.edit_form:
   requirements:
     _permission: 'administer wembassy_templates'
 
-wembassy.node.layout:
-  path: '/node/{node}/layout'
+wembassy.entity.layout:
+  path: '/node/{entity_id}/layout'
   defaults:
-    _title_callback: '\Drupal\wembassy\Controller\SiteBuilder::nodeTitle'
-    _controller: '\Drupal\wembassy\Controller\SiteBuilder::nodeLayout'
+    _title_callback: '\Drupal\wembassy\Controller\SiteBuilder::layoutTitle'
+    _controller: '\Drupal\wembassy\Controller\SiteBuilder::layoutBuilder'
   requirements:
     _permission: 'access content'

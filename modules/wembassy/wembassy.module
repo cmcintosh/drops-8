@@ -12,6 +12,25 @@ function wembassy_theme($existing, $type, $theme, $path) {
     'wembassy_backend_template' => [
       'render element' => 'form',
       'template' => 'wembassy-backend-template'
-    ]
+    ],
+    'wembassy_frontend_builder' => [
+      'variables' => [
+        'assets' => NULL,
+        'plugins' => NULL,
+        'pluginOpts' => NULL,
+        'sectors' => NULL,
+      ]
+    ],
   ];
+}
+
+function wembassy_preprocess_page(&$vars) {
+
+}
+
+function wembassy_theme_suggestions_alter(array &$suggestions, array &$variables, $hook) {
+  if ($hook == 'page') {
+    $variables['page']['#attached']['drupalSettings']['wembassy']['siteBuilder']['template_suggestions'] = $suggestions;
+  }
+
 }

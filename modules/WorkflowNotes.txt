@@ -1,0 +1,7 @@
+//
+
+1. Define Components, Blocks, Commands, Assets, etc
+2. Attach Defined components, blocks, plugins to drupalSettings.
+3. Initialize editor via a click.
+4. Save changes to twig configuration.
+5. export to a new theme.
