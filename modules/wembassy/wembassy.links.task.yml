@@ -22,9 +22,3 @@ entity.template.collection:
   title: 'Templates'
   route_name: entity.template.collection
   base_route: wembassy.admin
-
-# Node related tab
-wembassy.node.layout:
-  title: 'Layout'
-  route_name: wembassy.node.layout
-  base_route: entity.node.canonical

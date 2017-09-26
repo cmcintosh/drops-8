@@ -121,6 +121,21 @@ grapesjs-blocks-basic:
   dependencies:
     - wembassy/grapejs
 
+drupalFields:
+  version: 0.1
+  js:
+    assets/js/drupal/wembassy.fields.js: {}
+
+drupalBlocks:
+  version: 0.1
+  js:
+    assets/js/drupal/wembassy.blocks.js: {}
+
+drupalStorage:
+  version: 0.1
+  js:
+    assets/js/drupal/wembassy.storage.js: {}
+
 grapejs:
   version: 0.10.7
   css:
@@ -132,6 +147,8 @@ grapejs:
   dependencies:
     - core/jquery
     - wembassy/perfectScrollbar
+
+
 
 sticky:
   version: 1.0

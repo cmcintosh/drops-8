@@ -23,7 +23,7 @@ use Drupal\Component\Annotation\Plugin;
    public $id;
 
    /**
-    * The GrapesJS Block label.
+    * The GrapesJS Plugin library.
     *
     * @ingroup plugin_translatable
     *

@@ -65,3 +65,19 @@ wembassy.entity.layout:
     _controller: '\Drupal\wembassy\Controller\SiteBuilder::layoutBuilder'
   requirements:
     _permission: 'access content'
+
+wembassy.site_builder.save:
+  path: '/js/grapesjs/save'
+  defaults:
+    _controller: '\Drupal\wembassy\Controller\SiteBuilder::saveGrapesJS'
+  requirements:
+    _permission: 'access content'
+  methods: [ POST ]
+
+wembassy.site_builder.load:
+  path: '/js/grapesjs/load'
+  defaults:
+    _controller: '\Drupal\wembassy\Controller\SiteBuilder::loadGrapesJS'
+  requirements:
+    _permission: 'access content'
+  methods: [ POST ]

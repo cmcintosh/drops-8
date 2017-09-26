@@ -1,6 +1,15 @@
 (function($, Drupal) {
 
   $(document).ready(function(){
+
+    function updateTooltip(coll, pos) {
+      coll.each(function(item) {
+        var attrs = item.get('attributes');
+        attrs['data-tooltip-pos'] = pos || 'bottom';
+        item.set('attributes', attrs);
+      });
+    }
+
     var toolbar = $('#toolbar-administration');
     var head = $('head').html();
     $('#toolbar-administration').remove();
@@ -497,30 +506,37 @@
         el.attr('title', '');
     });
 
-    // Connect to Drupal Load and Save
-    // var storageManager = editor.StorageManager;
-    // storageManager.add('drupal', {
-    //   load: function(keys){
-    //
-    //     return [];
-    //   },
-    //   store: function(data){
-    //     console.log(data);
-    //     for(var key in data)
-    //       localStorage.setItem(key, data[key]);
-    //   }
-    // });
-
-    // Store and load events
-    editor.on('storage:load', function(e) {
-        console.log('Loaded ', e);
-    });
-    editor.on('storage:store', function(e) {
-        console.log('Stored ', e);
-    });
     editor.on('load', function(e) {
-      console.log("Loaded Editor");
+      
     });
-  });
 
+    //  Add Commands for selecting a template
+    var cmdm = editor.Commands;
+    cmdm.add('set-template', {
+      run: function(editor, sender) {
+        console.log('editor:', editor);
+        console.log('sender:', sender);
+      }
+    });
+
+    var pnm = editor.Panels;
+    var panelTemplates = pnm.addPanel({
+      id: 'templates-a',
+      visible: true,
+      buttons: [{
+        id: 'page',
+        command: 'set-template',
+        attributes: {'title': 'page.html.twig'},
+        html: 'page.html.twig',
+        active: true,
+      },{
+        id: 'page--node',
+        command: 'set-template',
+        attributes: {'title': 'page--node.html.twig'},
+        html: 'page--node.html.twig',
+        active: true,
+      }]
+    });
+
+  });
 })(jQuery, Drupal);

@@ -2,13 +2,16 @@
 
 namespace Drupal\wembassy\Plugin\GrapesJS\Plugin;
 
-use Drupal\Core\Plugin\PluginBase;
+use Drupal\wembassy\Plugin\GrapesJS\Plugin\GrapesJSPluginBase;
 use Drupal\wembassy\Plugin\GrapesJS\Plugin\GrapesJSPluginInterface;
 
 /**
-* Provides the base GrapeJS Block type class.
+* @GrapesJSPlugin(
+*   id = "gjs-navbar",
+*   library = "wembassy/grapesjs-navbar"
+* )
 */
-abstract class GrapesJSPluginBase extends PluginBase implements GrapesJSPluginInterface {
+class Navbar extends GrapesJSPluginBase implements GrapesJSPluginInterface {
 
     /**
     * Return the DOM Element for this component.
@@ -21,13 +24,6 @@ abstract class GrapesJSPluginBase extends PluginBase implements GrapesJSPluginIn
     * Return preconfigured options for the plugin.
     */
     public function getOptions() {
-      return [];
-    }
-
-    /**
-    * Return Drupal settings that need to be added.
-    */
-    public function drupalSettings($entity_type, $bundle, $entity) {
       return [];
     }
 

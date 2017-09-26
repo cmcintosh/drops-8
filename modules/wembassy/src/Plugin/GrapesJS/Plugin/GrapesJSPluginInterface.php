@@ -13,4 +13,9 @@ interface GrapesJSPluginInterface {
   */
   public function getLibrary();
 
+  /**
+  * Returns any drupalSettings that need to be added for the plugin to work.
+  */
+  public function drupalSettings($entity_type, $bundle, $entity);
+
 }
