@@ -13,6 +13,9 @@ function wembassy_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'template' => 'wembassy-backend-template'
     ],
+    'wembassy_ab_panel' => [
+      'template' => 'wembassy-ab-panel'
+    ],
     'wembassy_frontend_builder' => [
       'variables' => [
         'assets' => NULL,

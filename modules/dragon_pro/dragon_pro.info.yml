@@ -1,0 +1,5 @@
+name: Dragon Pro
+type: module
+description: 'Provides access to the Pro elements.'
+package: Dragon Drupal
+core: 8.x

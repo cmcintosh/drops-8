@@ -58,6 +58,7 @@ entity.template.edit_form:
   requirements:
     _permission: 'administer wembassy_templates'
 
+# provides the editor display for entities.
 wembassy.entity.layout:
   path: '/node/{entity_id}/layout'
   defaults:
@@ -66,6 +67,7 @@ wembassy.entity.layout:
   requirements:
     _permission: 'access content'
 
+# Saves data as a config entity until needed.
 wembassy.site_builder.save:
   path: '/js/grapesjs/save'
   defaults:
@@ -74,10 +76,19 @@ wembassy.site_builder.save:
     _permission: 'access content'
   methods: [ POST ]
 
+# Saves data as a config entity until needed.
 wembassy.site_builder.load:
   path: '/js/grapesjs/load'
   defaults:
     _controller: '\Drupal\wembassy\Controller\SiteBuilder::loadGrapesJS'
+  requirements:
+    _permission: 'access content'
+  methods: [ GET ]
+
+wembassy.site_builder.create_twig:
+  path: '/js/grapesjs/create_twig'
+  defaults:
+    _controller: '\Drupal\wembassy\Controller\SiteBuilder::createTwig'
   requirements:
     _permission: 'access content'
   methods: [ POST ]

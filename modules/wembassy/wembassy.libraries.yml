@@ -121,6 +121,16 @@ grapesjs-blocks-basic:
   dependencies:
     - wembassy/grapejs
 
+chosen:
+  version: 0.1
+  css:
+    theme:
+      assets/library/chosen/chosen.css: {}
+  js:
+    assets/library/chosen/chosen.jquery.js: {}
+  dependencies:
+    - jquery
+
 drupalFields:
   version: 0.1
   js:
@@ -135,6 +145,8 @@ drupalStorage:
   version: 0.1
   js:
     assets/js/drupal/wembassy.storage.js: {}
+  dependencies:
+    - wembassy/chosen
 
 grapejs:
   version: 0.10.7

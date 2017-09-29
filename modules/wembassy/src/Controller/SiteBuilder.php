@@ -57,7 +57,10 @@ class SiteBuilder extends ControllerBase {
         ],
         'library' => $libraries,
       ],
-      'container' => $build
+      'container' => $build,
+      'ab_panel' => [
+        '#theme' => 'wembassy_ab_panel'
+      ]
     ];
   }
 
@@ -178,13 +181,14 @@ class SiteBuilder extends ControllerBase {
   * End point to get data from the builder.
   */
   public function saveGrapesJS(Request $request) {
+
     $template_id = $request->request->get('template');
     $data = $request->request->get('data');
     $entity_type = $request->request->get('entity_type');
     $bundle = $request->request->get('bundle');
 
     if ($entity = entity_load('template', $template_id)){
-
+      $entity->set('layout', $request->request->get('data'));
     }
     else {
       $entity = Template::create([
@@ -221,7 +225,7 @@ class SiteBuilder extends ControllerBase {
   * End point to load data from drupal for the builder.
   */
   public function loadGrapesJS(Request $request) {
-    $template_id = $request->request->get('template');
+    $template_id = ($request->request->has('template')) ? $request->query->get('template') : 'page.html.twig';
     $entity = entity_load('template', $template_id);
     return new JsonResponse(['data' => $entity->get('layout')]);
   }
@@ -236,6 +240,27 @@ class SiteBuilder extends ControllerBase {
       ->view($entity);
     return new JsonResponse([
       'content' => render($display)
+    ]);
+  }
+
+  /**
+  * Endpoint used to save the template to a twig file.
+  */
+  public function createTwig(Request $request) {
+    ksm($request->request->get('data'));
+
+    return new JsonResponse([
+      'success' => 0
+    ]);
+  }
+
+  /**
+  * Endpoint used to create and push commits.
+  */
+  public function createCommit(Request $request) {
+
+    return new JsonResponse([
+      'success' => 0
     ]);
   }
 }

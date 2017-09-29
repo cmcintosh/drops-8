@@ -20,8 +20,8 @@
         width: '100%',
         container: 'body',
         components: head + page_content + '<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap.css" media="all">',
-        // fromElement: 1,
-        // showOffsets: 1,
+        fromElement: 0,
+        showOffsets: 1,
         plugins: drupalSettings.wembassy.siteBuilder.plugins,
         pluginsOpts: drupalSettings.wembassy.siteBuilder.pluginsOpts,
 
@@ -29,10 +29,11 @@
         assetManager: {
             assets: drupalSettings.wembassy.siteBuilder.assets
         },
-
         storageManager: {
-            storeComponents: 1,
-            storeStyles: 1,
+          storeComponents: 1,
+          storeStyles: 1,
+          autoSave: 1,
+          type: 'remote',
         },
         // Configure style
         styleManager: {
@@ -504,38 +505,6 @@
             return;
         el.attr('data-tooltip', el.attr('title'));
         el.attr('title', '');
-    });
-
-    editor.on('load', function(e) {
-      
-    });
-
-    //  Add Commands for selecting a template
-    var cmdm = editor.Commands;
-    cmdm.add('set-template', {
-      run: function(editor, sender) {
-        console.log('editor:', editor);
-        console.log('sender:', sender);
-      }
-    });
-
-    var pnm = editor.Panels;
-    var panelTemplates = pnm.addPanel({
-      id: 'templates-a',
-      visible: true,
-      buttons: [{
-        id: 'page',
-        command: 'set-template',
-        attributes: {'title': 'page.html.twig'},
-        html: 'page.html.twig',
-        active: true,
-      },{
-        id: 'page--node',
-        command: 'set-template',
-        attributes: {'title': 'page--node.html.twig'},
-        html: 'page--node.html.twig',
-        active: true,
-      }]
     });
 
   });

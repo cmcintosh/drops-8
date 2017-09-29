@@ -31,6 +31,8 @@ use Drupal\Core\Entity\EntityStorageInterface;
 *    "id",
 *    "status",
 *    "title",
+*    "variant",
+*    "variant_status",
 *    "entity_type",
 *    "bundle",
 *    "default",
@@ -51,6 +53,8 @@ class Template extends ConfigEntityBase {
   public $id;
   public $status;
   public $title;
+  public $variant;
+  public $variant_status;
   public $entity_type;
   public $bundle;
   public $default;

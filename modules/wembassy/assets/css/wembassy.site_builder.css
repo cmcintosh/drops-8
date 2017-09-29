@@ -141,7 +141,7 @@ iframe {
 }
 
 #gjs-pn-devices-c {
-    width: 85%;
+    width: 50%;
     z-index: 1;
 }
 
@@ -194,13 +194,131 @@ iframe {
   fill: #fff !important;
 }
 
-div#gjs-pn-templates-a .gjs-pn-buttons {
-    display: none;
+.gjs-block-categories {
+    position: relative;
+    top: 40px;
 }
+
+/**
+* Template related.
+*/
 div#gjs-pn-templates-a label {
   color:#fff;
   margin:0px 10px;
 }
 div#gjs-pn-templates-a select {
   color:#000;
+}
+div#gjs-pn-options .fa.fa-code,
+div#gjs-pn-options .fa.fa-download {
+  display: none;
+}
+
+button#commit-twig {
+    position: absolute;
+    top: 5px;
+    left: 400px;
+    height: 28px;
+    padding-top: 4px;
+}
+
+div#gjs-pn-templates-a {
+  position: relative;
+  overflow: visible;
+  padding-bottom: 10px;
+}
+
+div#gjs-pn-templates-a .gjs-pn-buttons {
+  position: absolute;
+  top: 4px;
+  left: 295px;
+  z-index: 99999;
+}
+
+div#gjs-pn-templates-a span.gjs-pn-btn {
+    padding: 3px;
+}
+
+div#gjs-pn-templates-a .ab-testing {
+  content: 'A/B';
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  display: block;
+  padding-top: 4px !important;
+}
+
+/* Related to AB Testing @TODO: move to own style file. */
+div#gjs-pn-ab-testing {
+    position: absolute;
+    left: 0px;
+    width: 800px;
+    top: 34px;
+    z-index: 1;
+}
+
+div#gjs-pn-ab-testing .form-group {
+    text-align: left;
+    padding: 5px;
+}
+
+div#gjs-pn-ab-testing td, div#gjs-pn-ab-testing th {
+    padding: 10px;
+    border-bottom: 1px solid;
+}
+
+div#gjs-pn-ab-testing li.active a {
+  color: #337ab7;
+}
+
+div#gjs-pn-ab-testing li a {
+  color: #fff;
+}
+
+div#gjs-pn-ab-testing .tab-content li a {
+  color: #000;
+}
+
+div#gjs-pn-ab-testing .tab-content li.active a {
+  color: #337ab7;
+}
+
+div#gjs-pn-ab-testing .tab-content {
+    background: #fff;
+    color: #000;
+    text-align: left;
+    padding: 15px;
+    overflow: hidden;
+}
+
+div#gjs-pn-ab-testing .tab-content table {
+  width: 100%;
+}
+
+#goal-templates .well.col-sm-4 {
+  height: 188px;
+  margin: 5px;
+  width: 232px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/**
+* Search blocks related.
+*/
+div#gjs-pn-search-blocks {
+    position: absolute;
+    border: 1px solid black;
+    right: 10px;
+    z-index: 99999;
+    top: 38px;
+    width: 15%;
+}
+
+span.gjs-pn-btn.fa,
+.gjs-blocks-cs .gjs-block {
+    color: #fff !important;
+}
+span.gjs-pn-btn.fa.gjs-pn-active {
+    color:yellow !important;
 }

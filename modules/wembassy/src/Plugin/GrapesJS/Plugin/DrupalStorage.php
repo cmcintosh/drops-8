@@ -42,15 +42,40 @@ class DrupalStorage extends GrapesJSPluginBase implements GrapesJSPluginInterfac
       $config = \Drupal::config('system.theme');
       $current_theme = $config->get('default');
       $theme_path = drupal_get_path('theme', $current_theme);
+      $existing_templates = [];
       foreach($suggestions as $suggestion) {
-        
+        if ($this->templateExists($theme_path, $suggestion . '.html.twig')) {
+          $existing_templates[] = $suggestion . '.html.twig';
+        }
+        else if ($entity = entity_load('template', $suggestion . '.html.twig')) {
+          $existing_templates[] = $suggestion . '.html.twig';
+        }
       }
 
       return [
         'current_theme' => $current_theme,
         'suggestions' => $suggestions,
-        'existing_templates' => []
+        'existing_templates' => $existing_templates,
+        'inherit_base_theme' => (count($existing_templates) < 1),
+        'current_template' => count($existing_templates) > 1 ? $existing_templates[count($existing_templates)-1] : $existing_templates[0]
       ];
+    }
+
+    /**
+    * Used to scan a theme for the provides templates.
+    */
+    private function templateExists($theme_path, $template, $returnPath = FALSE) {
+      $oDirectory = new \RecursiveDirectoryIterator($theme_path);
+      $oIterator = new \RecursiveIteratorIterator($oDirectory);
+      foreach($oIterator as $oFile) {
+          if ($oFile->getFilename() == $template) {
+            if($returnPath) {
+              return $oFile->getPath();
+            }
+             return TRUE;
+          }
+      }
+      return FALSE;
     }
 
 }
