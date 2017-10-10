@@ -1,0 +1,110 @@
+<?php
+
+/**
+* implements hook_theme_settings_alter
+*/
+function wembassy_theme_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id = NULL) {
+  // Work-around for a core bug affecting admin themes. See issue #943212.
+  if (isset($form_id)) {
+    return;
+  }
+
+  $ab_data = \Drupal::service('config.factory')->getEditable('wembassy_theme.dragon_ab_data');
+
+  $form['dragon_ab'] = [
+    '#type' => 'details',
+    '#title' => t('A/B Testing'),
+    '#weight' => -50
+  ];
+
+  $form['dragon_ab']['experiences'] = [
+    '#type' => 'details',
+    '#title' => t('Experiences'),
+    '#tree' => TRUE,
+  ];
+
+  $form['dragon_ab']['experiences'][0] = [
+    '#type' => 'details',
+    '#open' => TRUE,
+  ];
+
+  $form['dragon_ab']['experiences'][0]['details'] = [
+    'template' => [
+      '#type' => 'item',
+      '#title' => 'Template: page.tpl.php',
+      '#title_display' => 'before',
+    ],
+    'status' => [
+      '#type' => 'checkbox',
+      '#title' => t('Status')
+    ],
+  ];
+
+  $form['dragon_ab']['experiences'][0]['summary'] = [
+    '#type' => 'table',
+    '#prefix' => '<h2>' . t('Experiment Details') . '</h2>',
+    '#header' => [
+      'start_date' => [
+        'data' => t('Start Date')
+      ],
+      'conversions' => [
+        'data' => t('Conversions')
+      ],
+      'visitors' => [
+        'data' => t('Visitors')
+      ],
+      'goals' => [
+        'data' => t('Goals')
+      ],
+      'report_range' => [
+        'data' => t('Report Range')
+      ],
+    ]
+  ];
+
+  $form['dragon_ab']['experiences'][0]['goal_summary'] = [
+    '#type' => 'table',
+    '#prefix' => '<h2>' . t('Summary of Conversion Goal') . '</h2>',
+    '#header' => [
+      'variation' => [
+        'data' => t('Variation')
+      ],
+      'conversion' => [
+        'data' => t('Conversion Rate')
+      ],
+      'improvement' => [
+        'data' => t('Improvement')
+      ],
+      'confidence' => [
+        'data' => t('Confidence')
+      ],
+      'conv_visitors' => [
+        'data' => t('Conv/Visitors')
+      ],
+      'status' => [
+        'data' => t('Status')
+      ]
+    ],
+  ];
+
+  $form['dragon_ab']['experiences'][0]['variants'][0] = [
+    '#type' => 'table',
+    '#prefix' => '<h2>' . t('Variant 1') . '</h2>',
+    '#header' => [
+      [
+        'data' => t('Visuals/Goals')
+      ],
+      [
+        'data' => t('Conv. Rate')
+      ],
+      [
+        'data' => t('Conversions')
+      ],
+      [
+        'data' => t('Revenue P. Visitor')
+      ],
+    ],
+  ];
+
+  
+}
