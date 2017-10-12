@@ -37,12 +37,13 @@ class DrupalStorage extends GrapesJSPluginBase implements GrapesJSPluginInterfac
       $path_args = explode('/', $path);
       $a = array_shift($path_args); // first is blank
       array_pop($path_args); // Remove layout
-      $suggestions = ['page'] + theme_get_suggestions($path_args, 'page', '__');
+
+      $suggestions = ['page'] + theme_get_suggestions($path_args, 'page');
 
       if (\Drupal::service('path.matcher')->isFrontPage()) {
         $suggestions[] = 'page__front';
       }
-
+      
       $config = \Drupal::config('system.theme');
       $current_theme = $config->get('default');
       $theme_path = drupal_get_path('theme', $current_theme);

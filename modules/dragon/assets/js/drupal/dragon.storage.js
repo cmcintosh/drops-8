@@ -14,6 +14,7 @@
           */
           cmdm.add('save-twig', {
             run: function(editor, sender) {
+              console.log("Called Save Twig");
               editor.store();
             }
           });
@@ -23,7 +24,7 @@
           */
           cmdm.add('export-theme', {
             run: function(editor, sender) {
-              editor.store();
+              settings.dragon.editor.store();
               $('#dragon-loader').show();
               params = {
                 'template': $('#gjs-pn-templates-a select').val(),
@@ -31,6 +32,7 @@
                 'new_theme' : settings.dragon.page.new_theme,
                 'variant' : settings.dragon.current_variant,
               };
+              console.log('Exporting Theme', params);
 
               $.ajax({
                 type: "POST",
@@ -98,6 +100,16 @@
             }
           });
 
+          /**
+          * Command for adding the A/B testing code to the current template.
+          */
+          cmdm.add('ab-testing', {
+            run: function(editor, sender) {
+              console.log("Coming soon");
+            }
+          })
+
+
           /*
           * Create the Storage Controls.
           */
@@ -105,10 +117,6 @@
             id: 'templates-a',
             visible: true,
             buttons: [
-              {
-                id: 'ab-testing',
-                className: 'ab-testing-btn btn btn-info btn-small',
-              },
               {
                 id: 'export-html-template',
                 className: 'fa fa-download btn btn-small btn-success',
@@ -139,12 +147,6 @@
             if ($('#gjs-pn-templates-a select').length > 0) {
               return;
             }
-
-            $('#gjs-pn-ab-testing').hide();
-            $('.ab-testing-btn').html('A/B');
-            $('.ab-testing-btn').on('click', function(){
-              $('#gjs-pn-ab-testing').toggle();
-            });
 
             var wrapper = $('<div></div>').append($('<label></label>').html('Template:'));
             var select = $('<select></select>');
@@ -204,7 +206,65 @@
           * - theme
           * - variant - original by default
           */
-          
+
+
+          var drupalStore = function(data) {
+
+            if (settings.dragon.builder.preStore.length > 0) {
+              for (var i in settings.dragon.builder.preStore) {
+                data = settings.dragon.builder.preStore[i](data);
+              }
+            }
+
+            $.ajax({
+              type: "POST",
+              url: "/js/grapesjs/save",
+              data: {
+                template: settings.dragon.page.current_template,
+                theme: settings.dragon.page.current_theme,
+                data: data,
+              },
+              async: false,
+              success: function(e) {
+                $('#dragon-loader').hide();
+              },
+              always: function(e) {
+                $('#dragon-loader').hide();
+              },
+              dataType: "json"
+            });
+
+          }
+
+          var drupalLoad = function(keys) {
+            $.ajax({
+              type: "POST",
+              url: "/js/grapesjs/load",
+              data: {
+                template: settings.dragon.page.current_template,
+                theme: settings.dragon.page.current_theme
+              },
+              async: false,
+              success: function(e) {
+                if (e.data !== undefined) {
+                  if (settings.dragon.builder.preStore.length > 0) {
+                    for (var i in settings.dragon.builder.preStore) {
+                      e.data = settings.dragon.builder.preStore[i](e.data);
+                    }
+                  }
+                  editor.setComponents(e.data['gjs-html']);
+                  editor.setStyle(e.data['gjs-css']);
+                }
+              },
+              dataType: "json"
+            });
+          }
+
+        storageManager.add('drupal', {
+          load: drupalLoad,
+          store: drupalStore
+        });
+        storageManager.setCurrent('drupal');
 
         });// end of plugin
       } // end of behavior

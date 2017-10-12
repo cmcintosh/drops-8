@@ -487,9 +487,11 @@
              * Initializes the editor.
              */
             var initializeBuilder = function() {
+              // @TODO make this smarter, the user may have admin menu or some other toolbar plugin...
                 var toolbar = $('#toolbar-administration');
                 $('#toolbar-administration').remove();
                 settings.dragon.editor = grapesjs.init(editorSettings);
+
                 var cmdm = settings.dragon.editor.Commands;
                 cmdm.add('open-github', {
                     run: function(em, sender) {
@@ -501,17 +503,75 @@
                 // Attach CSS and JS from Drupal.
                 styles.each(function(){
                   var tag = $(this).prop('outerHTML');
-                  settings.dragon.editor.getComponents().add($(this).prop('outerHTML'));
+                  settings.dragon.editor.getComponents().add($(this).html());
                 });
 
-                scripts.each(function(){
-                  var tag = $(this).prop('outerHTML');
-                  settings.dragon.editor.getComponents().add($(this).prop('outerHTML'));
+                var iframe = settings.dragon.editor.Canvas.getFrameEl();
+                $('head link').each(function(){
+                  iframe.contentDocument.head.appendChild(this);
                 });
 
                 settings.dragon.editor.getComponents().add('<style>.visually-hidden { display:none; }</style>');
 
                 $('body').prepend(toolbar);
+                $('body').css({ height: $(window).height(), width: $(window).width(), overflow:'hidden' });
+
+                $(window).on('resize', function(){
+                  $('body').css({ height: $(window).height(), width: $(window).width(), overflow:'hidden' });
+                });
+
+                // Also add the search box for the components.
+                var pnm = settings.dragon.editor.Panels;
+                var panelSearch = pnm.addPanel({
+                  id: 'search-a',
+                  visible: true,
+                  buttons: [
+                    {
+                      class: 'search-dragon-blocks-wrapper',
+                    },
+                  ]
+                });
+
+                var searchBox = $('#gjs-pn-search-a')
+                  .append(
+                    $('<input></input>')
+                      .attr('type', 'textfield')
+                      .attr('id', 'search-dragon-blocks')
+                      .attr('placeholder', 'Search')
+                  );
+
+                function isBlocksVisible() {
+                  if ($('.gjs-pn-btn.fa.fa-th-large').hasClass('gjs-pn-active')) {
+                    $('div#gjs-pn-search-a').css({
+                      width: $('.gjs-block-category').width()
+                    });
+                    $('div#gjs-pn-search-a').show();
+                  }
+                  else {
+                    $('div#gjs-pn-search-a').hide();
+                  }
+
+                }
+
+                // Show or hide the block search box.
+                $('#gjs-pn-views .gjs-pn-btn').on('click', function(){
+                  isBlocksVisible();
+                });
+                $('div#gjs-pn-search-a').show();
+
+                // Text search
+                $('#search-dragon-blocks').on('keyup', function(){
+                  var text = $(this).val().toLowerCase();
+                  $('.gjs-block-label').each(function(){
+                    var label = $(this).html().toLowerCase();
+                    if (label.indexOf(text) < 0) {
+                      $(this).parent().hide();
+                    }
+                    else {
+                      $(this).parent().show();
+                    }
+                  });
+                })
             }
 
             /**

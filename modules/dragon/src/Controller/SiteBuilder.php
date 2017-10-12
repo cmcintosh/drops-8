@@ -206,7 +206,7 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
   */
   public function saveGrapesJS(Request $request) {
 
-    $template_id = $request->request->get('theme') . "-" . $request->request->get('template') . "-" . $request->request->get('variant');
+    $template_id = $request->request->get('theme') . "-" . $request->request->get('template');
     $data = $request->request->get('data');
 
     if ($entity = entity_load('template', $template_id)){
@@ -216,6 +216,8 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
       $entity = Template::create([
         'id' => $template_id,
         'layout' => $request->request->get('data'),
+        'template' => $request->request->get('template'),
+        'theme' => $request->request->get('theme')
       ]);
     }
 
@@ -243,12 +245,21 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
   * End point to load data from drupal for the builder.
   */
   public function loadGrapesJS(Request $request) {
-    $template_id = $request->request->get('theme') . "-";
-    $template_id .= ($request->request->has('template')) ? $request->request->get('template') : 'page.html.twig';
-    $template_id .= "-" . $request->request->get('variaon');
-
+    $template_id = $request->request->get('theme') . "-" .$request->request->get('template');
     $entity = entity_load('template', $template_id);
-    return new JsonResponse(['data' => $entity->get('layout')]);
+    if ($entity) {
+      return new JsonResponse([
+        'template' => $entity->get('template'),
+        'theme' => $entity->get('theme'),
+        'data' => $entity->get('layout'),
+      ]);
+    }
+    else {
+      return new JsonResponse([
+        'empty' => t('no template found')
+      ]);
+    }
+
   }
 
   /**

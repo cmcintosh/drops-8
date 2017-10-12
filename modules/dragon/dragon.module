@@ -52,8 +52,10 @@ function dragon_preprocess_page(&$vars) {
       $pluginData['pluginsOpts'][] = $plugin->getOptions();
       $pluginData['library'][] = $plugin->getLibrary();
       $settings = $plugin->drupalSettings();
-      foreach($settings as $id => $setting) {
-        $pluginData['drupalSettings'][$id] = $setting;
+      if ($settings) {
+        foreach($settings as $id => $setting) {
+          $pluginData['drupalSettings'][$id] = $setting;
+        }
       }
     }
 
