@@ -358,9 +358,10 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
       if ($template->get('id') == $original_theme. '-' . $template->get('template')) {
         $id = $template->get('id');
         $data = $template->get('layout');
-        $template_path = $theme_uri . "/templates/system/" . $template->get('template');
-        $style_path = $theme_uri . '/dragon/css/style.css';
-        $css_content = file_get_contents($style_path);
+
+        // @TODO add some handling for block / region / view / field templates...
+
+        $template_path = "{$new_theme}/templates/system/" . $template->get('template');
         $css_content .= "\n\r" . $data['gjs-css'];
         $files[] = [
           'filename' => $template_path,
