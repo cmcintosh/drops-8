@@ -501,6 +501,7 @@
                 });
 
                 // Attach CSS and JS from Drupal.
+                var styles = $('head style');
                 styles.each(function(){
                   var tag = $(this).prop('outerHTML');
                   settings.dragon.editor.getComponents().add($(this).html());
