@@ -577,7 +577,7 @@
             /**
              * When a user clicks the Dragon Admin button.
              */
-            $('#toolbar-link-dragon-admin').on('click', function(e) {
+            $('#toolbar-link-dragon-admin, .toolbar-icon.toolbar-icon-dragon-admin').on('click', function(e) {
                 toggleLoader();
                 if (settings.dragon.builder.state) {
                     // If the builder is active we want to hide it, then reinitialize the page.

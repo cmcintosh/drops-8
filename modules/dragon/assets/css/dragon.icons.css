@@ -1,4 +1,5 @@
-#toolbar-link-dragon-admin:before {
+#toolbar-link-dragon-admin:before,
+.toolbar-icon.toolbar-icon-dragon-admin:before {
   background: url('../img/dragon.png') no-repeat transparent;
   position: absolute;
   top:5px;
