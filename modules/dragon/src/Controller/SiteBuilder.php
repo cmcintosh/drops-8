@@ -10,6 +10,9 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
 class SiteBuilder extends ControllerBase implements ContainerInjectionInterface {
 
   /**
@@ -290,6 +293,8 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
   */
   public function buildTheme(Request $request) {
     // 1. Get the target theme's info.yml file.
+    $files = []; // Files that will be created for this theme.
+
     $original_theme = $request->request->get('theme');
     $new_theme = $request->request->get('new_theme');
 
@@ -327,23 +332,19 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
       $new_theme . '/global'
     ];
     $info_yaml = \Symfony\Component\Yaml\Yaml::dump($theme_info);
-    file_put_contents($theme_uri . "/{$new_theme}.info.yml", $info_yaml);
-    $library_info = [
-      'global' => [
-        'css' => [
-          'theme' => [
-            'dragon/css/style.css' => '{}'
-          ]
-        ]
-      ]
+    $files[] = [
+      'filename' => "{$new_theme}/{$new_theme}.info.yml",
+      'contents' => $info_yaml
     ];
-    $libraries_yaml = \Symfony\Component\Yaml\Yaml::dump($library_info);
-    file_put_contents($theme_uri . "/{$new_theme}.libraries.yml",
-    "global:
-        css:
-          theme:
-            dragon/css/style.css: {}"
-    );
+
+    $files[] = [
+      'filename' => "{$new_theme}/{$new_theme}.libraries.yml",
+      'contents' =>
+      "global:
+          css:
+            theme:
+              dragon/css/style.css: {}"
+    ];
 
     // 2. Load all templates that are associated for the target theme from the database.
     $query = \Drupal::entityQuery('template');
@@ -352,6 +353,7 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
 
     // 3. Update the current physical templates.
     $libraries= [];
+    $style_css ='';
     foreach($templates as $id => $template) {
       if ($template->get('id') == $original_theme. '-' . $template->get('template')) {
         $id = $template->get('id');
@@ -360,18 +362,37 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
         $style_path = $theme_uri . '/dragon/css/style.css';
         $css_content = file_get_contents($style_path);
         $css_content .= "\n\r" . $data['gjs-css'];
-        file_put_contents($template_path, $data['gjs-html']);
-        file_put_contents($style_path, $css_content);
+        $files[] = [
+          'filename' => $template_path,
+          'contents' => $data['gjs-html']
+        ];
+        $stle_css .= $css_content . "\n\r";
       }
     }
 
-    // Update
+    $files[] = [
+      'filename' => $theme_uri . '/dragon/css/style.css',
+      'contents' => $style_css,
+    ];
 
-    // 8. Clear all caches..
-    drupal_flush_all_caches();
+    // 8. Create the zip file for the theme.
+    $zip = new ZipArchive();
+    $url = \Drupal\Core\File\FileSystem::realpath('public://') . "{$new_theme}.zip";
 
+    if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+      return new JsonResponse([
+        'success' => 0
+      ]);
+    }
+
+    foreach($files as $file) {
+      $zip->addFromString($file['filename'], $file['contents']);
+    }
+    $zip->close();
+    
     return new JsonResponse([
-      'success' => 0
+      'success' => 0,
+      'uri' => $url,
     ]);
   }
 
