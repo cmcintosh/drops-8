@@ -366,7 +366,7 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
           'filename' => $template_path,
           'contents' => $data['gjs-html']
         ];
-        $stle_css .= $css_content . "\n\r";
+        $style_css .= $css_content . "\n\r";
       }
     }
 
@@ -376,23 +376,27 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
     ];
 
     // 8. Create the zip file for the theme.
-    $zip = new ZipArchive();
-    $url = \Drupal\Core\File\FileSystem::realpath('public://') . "{$new_theme}.zip";
-
-    if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+    $zip = new \ZipArchive();
+    $filepath = drupal_realpath('public://') . "/{$new_theme}.zip";
+    if (file_exists($filepath)) {
+      unlink($filepath);
+    }
+    if ($zip->open($filepath, \ZipArchive::CREATE)!==TRUE) {
+      \Drupal::logger('dragon')->notice("Could not open:" . $filepath);
       return new JsonResponse([
         'success' => 0
       ]);
     }
 
+    // Add all of our required files to the theme.
     foreach($files as $file) {
       $zip->addFromString($file['filename'], $file['contents']);
     }
     $zip->close();
-    
+
     return new JsonResponse([
-      'success' => 0,
-      'uri' => $url,
+      'success' => 1,
+      'uri' => file_create_url("public://{$new_theme}.zip"),
     ]);
   }
 

@@ -38,7 +38,12 @@
                 data: params,
                 async: false,
                 success: function(e) {
-                  alert("Finished Exporting");
+                  if (e.status !== 0) {
+                    window.open(e.uri,'_blank');
+                  }
+                  else {
+                    alert("There was an issue creating the theme, please check your error logs.");
+                  }
                   $('#dragon-loader').hide();
                 },
                 always: function(e) {
