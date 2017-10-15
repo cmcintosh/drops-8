@@ -353,14 +353,16 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
     // 3. Update the current physical templates.
     $libraries= [];
     foreach($templates as $id => $template) {
-      $id = $template->get('id');
-      $data = $template->get('layout');
-      $template_path = $theme_uri . "/templates/system/$id";
-      $style_path = $theme_uri . '/dragon/css/style.css';
-      $css_content = file_get_contents($style_path);
-      $css_content .= "\n\r" . $data['gjs-css'];
-      file_put_contents($template_path, $data['gjs-html']);
-      file_put_contents($style_path, $css_content);
+      if ($template->get('id') == $original_theme. '-' . $template->get('template')) {
+        $id = $template->get('id');
+        $data = $template->get('layout');
+        $template_path = $theme_uri . "/templates/system/" . $template->get('template');
+        $style_path = $theme_uri . '/dragon/css/style.css';
+        $css_content = file_get_contents($style_path);
+        $css_content .= "\n\r" . $data['gjs-css'];
+        file_put_contents($template_path, $data['gjs-html']);
+        file_put_contents($style_path, $css_content);
+      }
     }
 
     // Update

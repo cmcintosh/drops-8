@@ -45,6 +45,7 @@ class DrupalBlocks extends GrapesJSPluginBase implements GrapesJSPluginInterface
         $blocks[$id] = [
           'id' => $id,
           'label' => $definition['admin_label'],
+          'content' => render($build['content']),
           'value' => $display,
         ];
       }

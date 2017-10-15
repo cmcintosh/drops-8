@@ -1,0 +1,4 @@
+global:
+        css:
+          theme:
+            dragon/css/style.css: {}

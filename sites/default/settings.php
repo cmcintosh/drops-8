@@ -17,21 +17,20 @@ $settings['container_yamls'][] = __DIR__ . '/services.yml';
 include __DIR__ . "/settings.pantheon.php";
 
 /**
- * If there is a local settings file, then include it
+ * Initialize the branch setting array element.
+ */
+$git_head = file_get_contents('.git/HEAD');
+$settings['branch'] = trim(str_replace('ref: refs/heads/', '', $git_head));
+
+/**
+ * If there is a local settings file, then include it.
  */
 $local_settings = __DIR__ . "/settings.local.php";
 if (file_exists($local_settings)) {
+  $settings['is_local'] = TRUE;
   include $local_settings;
 }
-$databases['default']['default'] = array (
-  'database' => 'dx8',
-  'username' => 'root',
-  'password' => 'drupaladm1n',
-  'prefix' => '',
-  'host' => 'mysql',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
-);
-$settings['hash_salt'] = 'wuO5IZ2-ant71m78o2uRRn2igLPjmc0XTq_BV3G5WrXjEN_RV36BbYjh8-XzUnRjMnyOAwg_KA';
+
 $settings['install_profile'] = 'standard';
+
+$settings['locale_custom_strings_en'][''] = array('Apply to selected items' => 'Apply');

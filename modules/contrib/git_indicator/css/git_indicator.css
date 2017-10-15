@@ -1,0 +1,45 @@
+.toolbar-bar .git-indicator-toolbar-tab .toolbar-item,
+.adminimal-admin-toolbar .toolbar .toolbar-bar .git-indicator-toolbar-tab .toolbar-item {
+  cursor: default;
+  color: #fff;
+}
+
+.git-indicator.adminimal-admin-toolbar .toolbar .toolbar-bar .toolbar-item {
+  color: #fff;
+}
+
+.toolbar-bar .toolbar-icon-branch:before {
+  background-image: url(../icons/code-fork.svg);
+}
+
+.toolbar-bar .toolbar-icon-local:before {
+  background-image: url(../icons/laptop.svg);
+}
+
+#toolbar-tab-git-indicator-local,
+.adminimal-admin-toolbar .toolbar .toolbar-bar #toolbar-tab-git-indicator-local.toolbar-tab > .toolbar-item:hover {
+  background-color: #983838;
+}
+
+#toolbar-tab-git-indicator,
+.adminimal-admin-toolbar .toolbar .toolbar-bar #toolbar-tab-git-indicator.toolbar-tab > .toolbar-item:hover {
+  background-color: #326d91;
+}
+
+#toolbar-bar {
+  background-color: #358686;
+}
+
+.domain-dev-sunland-pantheonsite-io #toolbar-bar {
+  background-color: #358646;
+}
+
+.domain-test-sunland-pantheonsite-io #toolbar-bar {
+  background-color: #b59e2f;
+}
+
+.domain-live-sunland-pantheonsite-io #toolbar-bar,
+.domain-edith-sunlandhoney-com #toolbar-bar,
+.domain-edith-sunland-co #toolbar-bar {
+  background-color: #af2121;
+}

@@ -1,0 +1,11 @@
+name: Git Indicator
+type: module
+description: Adds Git branch with enviroment coloring to Admin Toolbar
+package: Development
+core: 8.x
+dependencies:
+  - admin_toolbar
+
+stylesheets:
+  all:
+    - css/git_indicator.css

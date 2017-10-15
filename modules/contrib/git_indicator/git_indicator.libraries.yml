@@ -1,0 +1,5 @@
+drupal.git_indicator:
+  version: '1.0'
+  css:
+    component:
+      css/git_indicator.css: {}

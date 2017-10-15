@@ -27,10 +27,8 @@
               settings.dragon.editor.store();
               $('#dragon-loader').show();
               params = {
-                'template': $('#gjs-pn-templates-a select').val(),
                 'theme' : settings.dragon.page.current_theme,
                 'new_theme' : settings.dragon.page.new_theme,
-                'variant' : settings.dragon.current_variant,
               };
               console.log('Exporting Theme', params);
 
@@ -40,6 +38,7 @@
                 data: params,
                 async: false,
                 success: function(e) {
+                  alert("Finished Exporting");
                   $('#dragon-loader').hide();
                 },
                 always: function(e) {
@@ -83,6 +82,7 @@
 
 
               $('#export-theme').on('click', function(){
+                alert('Exporting theme now');
                 settings.dragon.page.rebuild = $('#rebuild-theme').val();
                 settings.dragon.page.new_theme = $('#new-theme').val();
                 var exportCmd = cmdm.get('export-theme');

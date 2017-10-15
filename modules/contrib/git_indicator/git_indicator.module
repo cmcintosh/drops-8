@@ -1,0 +1,120 @@
+<?php
+/**
+ * @file
+ * Module implementation file.
+ */
+
+use Drupal\Core\Site\Settings;
+
+/**
+ * Retrieve Git branch.
+ */
+function git_indicator_get_branch() {
+  $branch = '';
+
+  $git_head_path = DRUPAL_ROOT . '/.git/HEAD';
+
+  if (file_exists($git_head_path)) {
+    $git_string = file_get_contents($git_head_path);
+    $branch = trim(str_replace('ref: refs/heads/', '', $git_string));
+  }
+
+  return $branch;
+}
+
+
+/**
+ * Implements HOOK_preprocess_html($variables).
+ */
+function git_indicator_preprocess_html(&$variables) {
+  // If there is not an existing class array, create an empty one.
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+
+  $classes = [];
+
+  // Add module class
+  $classes[] = 'git-indicator';
+
+  // Add the domain-xxxxx class.
+  $classes[] = 'domain-' . str_replace('.', '-', \Drupal::request()->getHost());
+
+  // Add the branch-xxxxx class (if present).
+  $branch = git_indicator_get_branch();
+  if (! empty($branch)) {
+    $classes[] = 'branch-' . $branch;
+  }
+
+  // Add the is-local class (if present).
+  $is_local = Settings::get('is_local', NULL);
+  if (! empty($is_local)) {
+    $classes[] = 'is-local';
+  }
+
+  // Merge new classes into existing ones.
+  $variables['attributes']['class'] = array_merge($variables['attributes']['class'], $classes);
+}
+
+
+/**
+ * Implements hook_toolbar().
+ */
+function git_indicator_toolbar() {
+  $items = [];
+
+  // Create tab for git branch if found
+  $branch = git_indicator_get_branch();
+
+  if (! empty($branch)) {
+    $items['git_indicator'] = [
+      '#type' => 'toolbar_item',
+      'tab' => [
+        '#type' => 'html_tag',
+        '#access' => \Drupal::currentUser()->hasPermission('access git indicator'),
+        '#tag' => 'div',
+        '#value' => $branch,
+        '#attributes' => [
+          'class' => ['toolbar-icon', 'toolbar-icon-branch'],
+          'title' => $branch,
+        ],
+      ],
+      '#wrapper_attributes' => [
+        'class' => ['git-indicator-toolbar-tab'],
+        'id' => 'toolbar-tab-git-indicator',
+      ],
+      '#attached' => [
+        'library' => ['git_indicator/drupal.git_indicator'],
+      ],
+      '#weight' => -998,
+    ];
+  }
+
+  // Create local tab if local
+  $is_local = Settings::get('is_local', NULL);
+  if (! empty($is_local)) {
+    $items['git_indicator_local'] = [
+      '#type' => 'toolbar_item',
+      'tab' => [
+        '#type' => 'html_tag',
+        '#access' => \Drupal::currentUser()->hasPermission('access git indicator'),
+        '#tag' => 'div',
+        '#value' => t('Local'),
+        '#attributes' => [
+          'class' => ['toolbar-icon', 'toolbar-icon-local'],
+          'title' => 'Local',
+        ],
+      ],
+      '#wrapper_attributes' => [
+        'class' => ['git-indicator-toolbar-tab'],
+        'id' => 'toolbar-tab-git-indicator-local',
+      ],
+      '#attached' => [
+        'library' => ['git_indicator/drupal.git_indicator'],
+      ],
+      '#weight' => -999,
+    ];
+  }
+
+  return $items;
+}

@@ -6,15 +6,22 @@
         var domComponents = editor.DomComponents;
         var blockManager = editor.BlockManager;
         var pnm = editor.Panels;
+        var cmdm = editor.Commands;                 // Command Object.
         var defaultType = domComponents.getType('default');
         var defaultModel = defaultType.model;
         var defaultView = defaultType.view;
 
-        console.log(domComponents);
+        /**
+        * Command for editing a drupal blockhttps://stackoverflow.com/questions/22581861/compass-sass-writing-files-with-no-access-permissions-for-everyone-group-on-os
+        */
+        cmdm.add('drupal-block-edit', {
+          run: function(editor, sender) {
+
+          }
+        });
 
 
         // Create the model for the block
-
         var blockModel = defaultModel.extend({
               defaults: Object.assign({}, defaultModel.prototype.defaults, {
                 draggable: 'region',
@@ -38,6 +45,7 @@
                   },
                   {
                     attributes: {class: 'fa fa-pencil'},
+                    command: 'drupal-block-edit'
                   }
                 ]
               })
