@@ -589,7 +589,7 @@
                     initializeBuilder();
                     Drupal.attachBehaviors();
                     $(this).css({'background-color' : '#337ab7', 'color' : '#fff'});
-
+                    settings.dragon.builder.state = true;
                 }
                 e.preventDefault();
                 return false;
