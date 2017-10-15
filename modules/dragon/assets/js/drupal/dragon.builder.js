@@ -504,7 +504,7 @@
                 var styles = $('head style');
                 styles.each(function(){
                   var tag = $(this).prop('outerHTML');
-                  settings.dragon.editor.getComponents().add($(this).html());
+                  settings.dragon.editor.getComponents().add('<style>' + $(this).html() + '</style>');
                 });
 
                 var iframe = settings.dragon.editor.Canvas.getFrameEl();
