@@ -1,3 +1,6 @@
+/**
+* @file Contains css needed For the Dragon editor
+*/
 #toolbar-link-dragon-admin:before,
 .toolbar-icon.toolbar-icon-dragon-admin:before {
   background: url('../img/dragon.png') no-repeat transparent;
@@ -332,4 +335,15 @@ span.gjs-pn-btn.fa,
 }
 span.gjs-pn-btn.fa.gjs-pn-active {
     color:yellow !important;
+}
+
+.gjs-editor {
+    position: absolute;
+    width: 100%;
+}
+
+div#gjs-pn-search-a {
+    position: absolute;
+    right: 0px;
+    top: 10px;
 }

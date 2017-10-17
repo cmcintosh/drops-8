@@ -1,3 +1,4 @@
+# Third party Assets.
 spectrum:
   version: 1.x
   css:
@@ -19,25 +20,6 @@ ruler:
       assets/library/ruler/ruler.css: {}
   js:
     assets/library/ruler/jquery.ruler.js: {}
-
-cssJs:
-  version: 1.x
-  js:
-    assets/library/css.js/css.min.js: {}
-
-siteBuilder:
-  version: 0.1
-  css:
-    theme:
-      assets/css/dragon.site_builder.css: {}
-  js:
-    assets/js/drupal/dragon.site_builder.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - core/jquery.ui
-    - core/jquery.ui.sortable
-    - dragon/grapejs
 
 perfectScrollbar:
   version: 0.1
@@ -160,24 +142,6 @@ grapesjs:
     - core/jquery
     - dragon/perfectScrollbar
 
-sticky:
-  version: 1.0
-  js:
-    assets/library/sticky/jquery.sticky.js: {}
-
-dragon_backend_layout:
-  versiion: 1.x
-  js:
-    assets/js/layouts/backend_admin.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - core/jquery.ui
-    - core/jquery.ui.sortable
-    - dragon/formBuilder
-    - dragon/dragon_admin
-    - dragon/sticky
-
 dragon_color:
   version: 1.x
   js:
@@ -204,13 +168,18 @@ dragon_admin:
     - dragon/ruler
     - dragon/formBuilder
 
-icons:
+builder:
   version: 1.x
   css:
     theme:
-      assets/css/dragon.icons.css: {}
-      assets/css/dragon.site_builder.css: {}
+      assets/css/dragon.builder.css: {}
   js:
     assets/js/drupal/dragon.builder.js: {}
   dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/jquery.ui
+    - core/jquery.ui.sortable
+    - core/drupal.dialog
+    - core/drupal.dialog.ajax
     - dragon/grapesjs

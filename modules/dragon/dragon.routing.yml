@@ -65,7 +65,7 @@ dragon.node.layout:
     _title_callback: '\Drupal\dragon\Controller\SiteBuilder::layoutNodeTitle'
     _controller: '\Drupal\dragon\Controller\SiteBuilder::layoutNodeBuilder'
   requirements:
-    _permission: 'access content'
+    _permission: 'access dragon'
 
 # Saves data as a config entity until needed.
 dragon.site_builder.save:
@@ -73,7 +73,7 @@ dragon.site_builder.save:
   defaults:
     _controller: '\Drupal\dragon\Controller\SiteBuilder::saveGrapesJS'
   requirements:
-    _permission: 'access content'
+    _permission: 'access dragon'
   methods: [ POST ]
 
 # Saves data as a config entity until needed.
@@ -82,7 +82,16 @@ dragon.site_builder.load:
   defaults:
     _controller: '\Drupal\dragon\Controller\SiteBuilder::loadGrapesJS'
   requirements:
-    _permission: 'access content'
+    _permission: 'access dragon'
+  methods: [ POST ]
+
+# Saves data as a config entity until needed.
+dragon.site_builder.delete:
+  path: '/js/grapesjs/delete'
+  defaults:
+    _controller: '\Drupal\dragon\Controller\SiteBuilder::deleteGrapesJS'
+  requirements:
+    _permission: 'access dragon'
   methods: [ POST ]
 
 dragon.site_builder.create_twig:
@@ -90,7 +99,7 @@ dragon.site_builder.create_twig:
   defaults:
     _controller: '\Drupal\dragon\Controller\SiteBuilder::createTwig'
   requirements:
-    _permission: 'access content'
+    _permission: 'access dragon'
   methods: [ POST ]
 
 dragon.site_builder.build_theme:
@@ -98,5 +107,5 @@ dragon.site_builder.build_theme:
   defaults:
     _controller: '\Drupal\dragon\Controller\SiteBuilder::buildTheme'
   requirements:
-    _permission: 'access content'
+    _permission: 'access dragon'
   methods: [ POST ]

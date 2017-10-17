@@ -1,5 +1,6 @@
 (function($, Drupal) {
 
+  // We want to add the Drupal Blocks as drag-n-drop components via grapesjs
   Drupal.behaviors.dragonBlocks = {
     attach: function (context, settings) {
       grapesjs.plugins.add('drupal-blocks', function(editor, opts) {
@@ -10,13 +11,20 @@
         var defaultType = domComponents.getType('default');
         var defaultModel = defaultType.model;
         var defaultView = defaultType.view;
+        var modal = editor.Modal;
 
-        /**
-        * Command for editing a drupal blockhttps://stackoverflow.com/questions/22581861/compass-sass-writing-files-with-no-access-permissions-for-everyone-group-on-os
-        */
+        var blockEditModalContent = `
+        <div class="container form">
+          <div class="form-group">
+            <label>Template Name</label> <input type="textfield" class="form-control">
+          </div>
+        </div>
+        `;
+
         cmdm.add('drupal-block-edit', {
           run: function(editor, sender) {
-
+            console.log('Called edit');
+            drupalSettings.miniDragon.show();
           }
         });
 
@@ -24,12 +32,12 @@
         // Create the model for the block
         var blockModel = defaultModel.extend({
               defaults: Object.assign({}, defaultModel.prototype.defaults, {
-                draggable: 'region',
+                draggable: 'div, nav, region',
                 droppable: false,
                 traits: [
                   {
                       'label' : 'data-template',
-                      'placeolder': 'E.g. block.html.twig'
+                      'placeolder': 'E.g. block.html.twig',
                   }
                 ],
                 toolbar: [
@@ -52,34 +60,27 @@
             },
             // Static functions.
             {
-
               isComponent: function(el) {
                 var attr = $(el).attr('data-block');
                 if (typeof attr !== typeof undefined && attr !== false && ($(el).is('div') || $(el).is('nav')) ){
+                  $(el).attr('data-gjs-editable', false);
                    return {
                      'type' : 'block'
                    }
-                }
-                var id = $(el).attr('id');
-                if (id != undefined) {
-                  if (id.indexOf('block-') > -1) {
-                    return {
-                      'type' : 'block'
-                    }
-                  }
                 }
               },
             }
         );
 
-
         // Create the view for the block element.
         var blockView = defaultView.extend({
+            attributes: {
+              'data-gjs-editable' : false
+            },
             events: {
               drop: function(event, ui) { }
             },
         });
-
 
         // Create the actual component.
         var blockComponent = domComponents.addType('block', {
@@ -87,27 +88,12 @@
             content: '',
             attributes: {
                 'data-block': '',
-                'data-template': 'block.html.twig'
+                'data-template': 'block.html.twig',
+                'data-gjs-editable' : false
             },
             model: blockModel,
             view: blockView,
         });
-
-        // Create inner elements of a block, by default for Drupal, this is only Title, and content.
-        blockManager.add(i, {
-            label: "Block Label",
-            attributes: { 'class' : 'fa fa-cubes' },
-            content: '<code><h2>{{ label }}</h2></code>',
-            category: 'Drupal Elements'
-        });
-
-        blockManager.add(i, {
-            label: "Block Content",
-            attributes: { 'class' : 'fa fa-cubes' },
-            content: '<code>{{ content }}</code>',
-            category: 'Drupal Elements'
-        });
-
 
         // Create GrapeJS Blocks
         for (var i in settings.dragon.drupalBlocks) {
@@ -123,6 +109,12 @@
               });
             }
         }
+
+        settings.dragon.builder.preLoad.drupalBlocks = function(data) {
+
+          return data;
+        }
+
         // end of plugin
       });
       // end of behavior

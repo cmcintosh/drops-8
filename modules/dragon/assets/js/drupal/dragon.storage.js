@@ -30,8 +30,6 @@
                 'theme' : settings.dragon.page.current_theme,
                 'new_theme' : settings.dragon.page.new_theme,
               };
-              console.log('Exporting Theme', params);
-
               $.ajax({
                 type: "POST",
                 url: "/js/grapesjs/build-theme",
@@ -105,16 +103,6 @@
             }
           });
 
-          /**
-          * Command for adding the A/B testing code to the current template.
-          */
-          cmdm.add('ab-testing', {
-            run: function(editor, sender) {
-              console.log("Coming soon");
-            }
-          })
-
-
           /*
           * Create the Storage Controls.
           */
@@ -149,12 +137,16 @@
           */
           editor.on('load', function(e){
 
+            $('.gjs-pn-btn.fa.fa-trash.icon-blank').on('click', function(){
+              drupalDelete();
+            });
+
             if ($('#gjs-pn-templates-a select').length > 0) {
               return;
             }
 
             var wrapper = $('<div></div>').append($('<label></label>').html('Template:'));
-            var select = $('<select></select>');
+            var select = $('<select></select>').css({'width' : '200px'});
             select.addClass('chosen');
 
             // Add available suggestions to the list.
@@ -212,15 +204,13 @@
           * - variant - original by default
           */
 
-
+          // Save the Template information to drupal.
           var drupalStore = function(data) {
-
             if (settings.dragon.builder.preStore.length > 0) {
               for (var i in settings.dragon.builder.preStore) {
                 data = settings.dragon.builder.preStore[i](data);
               }
             }
-
             $.ajax({
               type: "POST",
               url: "/js/grapesjs/save",
@@ -241,6 +231,7 @@
 
           }
 
+          // Load the information from drupal
           var drupalLoad = function(keys) {
             $.ajax({
               type: "POST",
@@ -257,12 +248,33 @@
                       e.data = settings.dragon.builder.preStore[i](e.data);
                     }
                   }
+
                   editor.setComponents(e.data['gjs-html']);
                   editor.setStyle(e.data['gjs-css']);
                 }
               },
               dataType: "json"
             });
+          }
+
+          // Delete the information from drupal
+          var drupalDelete = function() {
+            $.ajax({
+              type: "POST",
+              url: "/js/grapesjs/delete",
+              data: {
+                template: settings.dragon.page.current_template,
+                theme: settings.dragon.page.current_theme
+              },
+              async: false,
+              success: function(e) {
+                // we want to reload from the page's content....
+                var content = $(settings.dragon.page.current_page_html);
+                content.find('#toolbar-administration').remove();
+                editor.setComponents(content.html());
+              },
+              dataType: "json"
+            })
           }
 
         storageManager.add('drupal', {

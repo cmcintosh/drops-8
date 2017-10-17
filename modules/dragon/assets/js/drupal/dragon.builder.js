@@ -1,4 +1,36 @@
 (function($, Drupal) {
+
+    Drupal.behaviors.miniDragon = {
+      attach: function(context, settings) {
+        settings.miniDragon = {};
+        settings.miniDragon.modalTitle = "Editing Layout for Block";
+        settings.miniDragon.modalContent = '<div class="mini-dragon"> <div id="mini-dragon-editor"> </div> </div>';
+
+        // Display the modal for the mini dragon editor....
+        settings.miniDragon.show = function() {
+          Drupal.dialog($(settings.miniDragon.modalContent).html(), {
+            title: settings.miniDragon.modalTitle,
+            buttons: [
+              {
+                text: Drupal.t('Close'),
+                click: function() {
+                  $(this).dialog('close');
+                }
+              },
+              {
+                text: Drupal.t('Save & Update'),
+                click: function() {
+                  console.log("Save data here.... return the updated template to the main dragon.");
+                  $(this).dialog('close');
+                }
+              }
+            ]
+          }).showModal();
+        }
+
+      }
+    }
+
     Drupal.behaviors.dragon = {
         attach: function(context, settings) {
             var originalPage = $('body').html();
@@ -8,9 +40,7 @@
             /**
              * Displays or hides the loader animation.
              */
-            var toggleLoader = function() {
-
-            }
+            var toggleLoader = function() { }
 
             /**
              * Style Manager Sectors, this is what defines what we can change.
@@ -482,12 +512,12 @@
                     sectors: styleManagerSectors,
                 }
             };
-
             /**
              * Initializes the editor.
              */
-            var initializeBuilder = function() {
-              // @TODO make this smarter, the user may have admin menu or some other toolbar plugin...
+            var initializeSiteBuilder = function() {
+
+              settings.dragon.page.current_page_html = $('html').html();
                 var toolbar = $('#toolbar-administration');
                 $('#toolbar-administration').remove();
                 settings.dragon.editor = grapesjs.init(editorSettings);
@@ -516,9 +546,14 @@
 
                 $('body').prepend(toolbar);
                 $('body').css({ height: $(window).height(), width: $(window).width(), overflow:'hidden' });
+                $('.gjs-editor').css({
+                  height: '100%',
+                  top: ($('#toolbar-bar').height() + 30) + 'px'
+                });
 
                 $(window).on('resize', function(){
                   $('body').css({ height: $(window).height(), width: $(window).width(), overflow:'hidden' });
+                  $('.gjs-editor').css({ height: '100%', top: ($('#toolbar-bar').height() + 30) + 'px'});
                 });
 
                 // Also add the search box for the components.
@@ -572,7 +607,9 @@
                       $(this).parent().show();
                     }
                   });
-                })
+                });
+
+              $('#gjs-pn-search-a').css({'width' : $('#gjs-pn-views-container').width() + 'px'});
             }
 
             /**
@@ -586,7 +623,7 @@
                         reload();
                     }
                 } else {
-                    initializeBuilder();
+                    initializeSiteBuilder();
                     Drupal.attachBehaviors();
                     $(this).css({'background-color' : '#337ab7', 'color' : '#fff'});
                     settings.dragon.builder.state = true;

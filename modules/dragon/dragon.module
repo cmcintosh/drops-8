@@ -26,12 +26,11 @@ function dragon_theme($existing, $type, $theme, $path) {
  * Implements hook_page_attachments().
  */
 function dragon_page_attachments(array &$attachments) {
-  $attachments['#attached']['library'][] = 'dragon/icons';
+  $attachments['#attached']['library'][] = 'dragon/builder';
 }
 
 /**
 * Implements hook_preprocess_page
-* This helps with A/B variant testing.
 */
 function dragon_preprocess_page(&$vars) {
   if (\Drupal::currentUser()->hasPermission('access dragon')) {
@@ -98,17 +97,19 @@ function dragon_preprocess_page(&$vars) {
 */
 function dragon_preprocess_region(&$vars) {
   if (\Drupal::currentUser()->hasPermission('access dragon')) {
-    $vars['attributes']['data-region'] = $vars['region'];
+    $vars['attributes']['data-region'] = 1;
   }
 }
 
 /**
 * Implements hook_preprocess_block
+* - adds the data-block attribute to blocks to signify them in the Dragon Editor.
+* - adds the data-gjs-editable to the blocks in an attempt to prevent editing them.
 */
 function dragon_preprocess_block(&$vars) {
   if (\Drupal::currentUser()->hasPermission('access dragon')) {
-    $vars['elements']['content']['attributes']['data-block-content'] =
-      $vars['elements']['content']['#attributes']['data-block-content'] = "1";
+    $vars['attributes']['data-block'] = "1";
+    $vars['attributes']['data-gjs-editable'] = false;
   }
 }
 

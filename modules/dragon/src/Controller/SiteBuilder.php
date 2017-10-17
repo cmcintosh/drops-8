@@ -91,6 +91,17 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
     ];
   }
 
+
+  /**
+  * Returns the mini-builder that will be used for entities.
+  */
+  public function entityBuilder (Request $request) {
+    $entity_type = $request->request->get('entity_type');
+    $bundle = $request->request->get('bundle');
+    $entity_id = $request->request->get('entity');
+
+  }
+
   /**
   * Internal function to get the defined Components.
   */
@@ -262,7 +273,20 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
         'empty' => t('no template found')
       ]);
     }
+  }
 
+  /**
+  * Handles deleting a template from the builder.
+  */
+  public function deleteGrapesJS(Request $request) {
+    $template_id = $request->request->get('theme') . "-" .$request->request->get('template');
+    $entity = entity_load('template', $template_id);
+    if ($entity) {
+      $entity->delete();
+    }
+    return new JsonResponse([
+      'success' => 1
+    ]);
   }
 
   /**
@@ -282,7 +306,6 @@ class SiteBuilder extends ControllerBase implements ContainerInjectionInterface 
   * Endpoint used to save the template to a twig file.
   */
   public function createTwig(Request $request) {
-
     return new JsonResponse([
       'success' => 0
     ]);
