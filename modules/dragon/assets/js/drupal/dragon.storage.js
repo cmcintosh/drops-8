@@ -205,11 +205,12 @@
           */
 
           // Save the Template information to drupal.
+          var saving = false;
           var drupalStore = function(data) {
-            if (settings.dragon.builder.preStore.length > 0) {
-              for (var i in settings.dragon.builder.preStore) {
-                data = settings.dragon.builder.preStore[i](data);
-              }
+            if (saving) { return; }
+            saving = true;
+            for (var i in settings.dragon.builder.preStore) {
+              data = settings.dragon.builder.preStore[i](data);
             }
             $.ajax({
               type: "POST",
@@ -222,9 +223,7 @@
               async: false,
               success: function(e) {
                 $('#dragon-loader').hide();
-              },
-              always: function(e) {
-                $('#dragon-loader').hide();
+                setTimeout(function(){ saving = false; }, 500);
               },
               dataType: "json"
             });
@@ -242,11 +241,11 @@
               },
               async: false,
               success: function(e) {
+                console.log("Load Success");
                 if (e.data !== undefined) {
-                  if (settings.dragon.builder.preStore.length > 0) {
-                    for (var i in settings.dragon.builder.preStore) {
-                      e.data = settings.dragon.builder.preStore[i](e.data);
-                    }
+                  for (var i in settings.dragon.builder.preLoad) {
+                    console.log("Calling preLoad", i);
+                    e.data = settings.dragon.builder.preLoad[i](e.data);
                   }
 
                   editor.setComponents(e.data['gjs-html']);

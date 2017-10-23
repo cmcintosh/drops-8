@@ -31,25 +31,39 @@ class DrupalFields extends GrapesJSPluginBase implements GrapesJSPluginInterface
     * Return all of the defined drupal fields.
     */
     public function drupalSettings() {
-      // $bundle_fields = \Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle);
-      // $fields = [];
-      // foreach($bundle_fields as $id => $field) {
-      //   $fields[$id] = [
-      //     'id' => $id,
-      //     'label' => $field->getLabel(),
-      //     'value' => render($entity->get($id)->view('default')),
-      //     'entity_type' => $entity_type
-      //   ];
-      // }
-      //
-      // $fields[] = [
-      //   'id' => 'body',
-      //   'label' => 'Body',
-      //   'value' => render($entity->get('body')->view('default'))
-      // ];
-      // return [
-      //   'fields' => $fields,
-      // ];
+      $settings = [];
+      $entities = [];
+      foreach (\Drupal::routeMatch()->getParameters() as $param) {
+
+        if ($param instanceof \Drupal\Core\Entity\EntityInterface) {
+          $entity = $param;
+          $entity_type = $entity->getEntityTypeId();
+          $bundle = $entity->bundle();
+          $bundle_fields = \Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle);
+          $fields = [];
+
+          $settings[$entity_type] = [
+            'label' => ucwords(str_replace('_', ' ', $entity_type))
+          ];
+
+          foreach($bundle_fields as $id => $field) {
+            $view = $entity->get($id)->view();
+            // ksm($view);
+            $view['attributes']['data-field'] = $entity_type . '.' . $id;
+            $fields[$id] = [
+              'id' => $id,
+              'label' => $field->getLabel(),
+              'value' => render($view),
+              'entity_type' => $entity_type
+            ];
+          }
+
+          $settings[$entity_type][$bundle] = $fields;
+        }
+      }
+      return [
+        'drupalFields' => $settings
+      ];
     }
 
 }

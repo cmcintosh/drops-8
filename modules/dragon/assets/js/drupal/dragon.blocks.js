@@ -1,8 +1,10 @@
 (function($, Drupal) {
 
+
   // We want to add the Drupal Blocks as drag-n-drop components via grapesjs
   Drupal.behaviors.dragonBlocks = {
     attach: function (context, settings) {
+
       grapesjs.plugins.add('drupal-blocks', function(editor, opts) {
         var domComponents = editor.DomComponents;
         var blockManager = editor.BlockManager;
@@ -14,17 +16,58 @@
         var modal = editor.Modal;
 
         var blockEditModalContent = `
-        <div class="container form">
-          <div class="form-group">
-            <label>Template Name</label> <input type="textfield" class="form-control">
+          <div class="container form">
+            <div class="form-group">
+              <label>Template Name</label> <select class="chosen" id="block-template-select"> </select>
+            </div>
+
+            <div id="block-editor"> </div>
+
+            <div class="row">
+              <button class="btn btn-info" id="block-layout-save">Save & Close</button>
+              <button class="btn btn-danger" id="block-layout-cancel">Cancel</button>
+            </div>
           </div>
-        </div>
         `;
 
         cmdm.add('drupal-block-edit', {
           run: function(editor, sender) {
-            console.log('Called edit');
-            drupalSettings.miniDragon.show();
+            var target = editor.getSelected().attributes.attributes['data-block'];
+            console.log(target);
+            // Redirect to this block's editing page.
+            modal.setTitle("Select template for " + target);
+
+            var modalContent = $(blockEditModalContent).clone();
+            modal.setContent(modalContent);
+
+            //Get template suggestions for the block.
+            var suggestions = settings.dragon.drupalBlocks[target].suggestions;
+            for (var i in suggestions) {
+              var option =$('<option></option>').attr('value', suggestions[i]).html(suggestions[i]);
+              if ( settings.dragon.drupalBlocks[target].current_template == suggestions[i] ) {
+                option.addClass('existing_template');
+                option.css({'background' : 'rgb(51, 122, 183)', 'color' : '#fff', 'font-weight' : 'bold'});
+              }
+              $('#block-template-select').append(
+                option
+              );
+            }
+            modal.open();
+            $('#block-template-select').val(settings.dragon.drupalBlocks[target].current_template);
+            $('#block-template-select').chosen();
+            $('#block-template-select').val(settings.dragon.drupalBlocks[target].current_template);
+            $('#block-template-select').trigger("chosen:updated");
+
+            // Setup handlers for saving / closing
+            $('#block-layout-cancel').on('click', function(){
+              modal.close();
+            });
+
+            $('#block-layout-save').on('click', function() {
+              var target = editor.getSelected().attributes.attributes['data-block'];
+              settings.dragon.drupalBlocks[target].current_template = $('#block-template-select').val();
+              modal.close();
+            });
           }
         });
 
@@ -55,16 +98,20 @@
                     attributes: {class: 'fa fa-pencil'},
                     command: 'drupal-block-edit'
                   }
-                ]
-              })
+                ],
+              }),
+              init: function() {
+                this.config.attributes['data-gjs-editable'] = false;
+              }
             },
             // Static functions.
             {
               isComponent: function(el) {
                 var attr = $(el).attr('data-block');
                 if (typeof attr !== typeof undefined && attr !== false && ($(el).is('div') || $(el).is('nav')) ){
-                  $(el).attr('data-gjs-editable', false);
-                   return {
+
+                  preventDirectBlockEditing(el);
+                  return {
                      'type' : 'block'
                    }
                 }
@@ -72,13 +119,34 @@
             }
         );
 
+        var preventDirectBlockEditing = function(el) {
+
+          $(el).attr('data-gjs-editable', "false");
+          $(el).attr('data-gjs-removable', "false");
+          $(el).attr('data-gjs-selectable', "false");
+
+          $(el).each(function(){
+
+            $(this).attr('data-gjs-editable', "false");
+            $(this).attr('data-gjs-removable', "false");
+            $(this).attr('data-gjs-selectable', "false");
+            // preventDirectBlockEditing(el);
+          });
+        }
+
         // Create the view for the block element.
         var blockView = defaultView.extend({
             attributes: {
-              'data-gjs-editable' : false
+              'data-gjs-editable' : false,
+              'data-gjs-removable': false,
             },
-            events: {
-              drop: function(event, ui) { }
+            render: function($p) {
+              this.renderAttributes();
+              var model = this.model;
+              this.updateContent();
+              this.renderChildren();
+              this.updateScript();
+              return this;
             },
         });
 
@@ -111,12 +179,43 @@
         }
 
         settings.dragon.builder.preLoad.drupalBlocks = function(data) {
-
+          var htmlData = $(data['gjs-html']);
+          htmlData.find("[data-block]").each(function(){
+            var id = $(this).attr('data-block');
+            console.log(settings.dragon.drupalBlocks[id]);
+            $(this).html(settings.dragon.drupalBlocks[id].content);
+          });
+          var container = $('<div></div>').append(htmlData);
+          data['gjs-html'] = container.html();
           return data;
         }
 
         // end of plugin
       });
+
+      //  Lets us loop through and generate template data to be stored in the block templates.
+      settings.dragon.builder.preStore.drupalBlocks = function(data) {
+        data.drupalBlocks = {};
+
+        // We need to find our blocks, and store the template information for them....
+        var htmlData = $(data['gjs-html']);
+        htmlData.find("[data-block]").each(function(){
+          var id = $(this).attr('data-block');
+          var template = (settings.dragon.drupalBlocks[id] == undefined) ? 'block.html.twig' : settings.dragon.drupalBlocks[id].current_template;
+
+          data.drupalBlocks[id] = {
+            id : id,
+            content  : $(this).html(),
+            template : template
+          };
+          $(this).html("{{ drupal_block(" + id + ") }}");
+        });
+
+        var container = $('<div></div>').append(htmlData);
+        data['gjs-html'] = $(container).html();
+        return data;
+      }
+
       // end of behavior
     }
   }

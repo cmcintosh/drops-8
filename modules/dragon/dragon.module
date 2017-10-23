@@ -108,7 +108,7 @@ function dragon_preprocess_region(&$vars) {
 */
 function dragon_preprocess_block(&$vars) {
   if (\Drupal::currentUser()->hasPermission('access dragon')) {
-    $vars['attributes']['data-block'] = "1";
+    $vars['attributes']['data-block'] = $vars['elements']['#plugin_id'];
     $vars['attributes']['data-gjs-editable'] = false;
   }
 }
@@ -119,7 +119,7 @@ function dragon_preprocess_block(&$vars) {
 * and include data-field attribute.
 */
 function dragon_preprocess_field(&$vars) {
-  $vars['attributes']['data-field'] = $vars['field_name'];
+  $vars['attributes']['data-field'] = $vars['entity_type'] . '.' . $vars['field_name'];
 }
 
 

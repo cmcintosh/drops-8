@@ -1,3 +1,21 @@
+Features List:
+- Edit Page layout
+-- View all available entities for a page.
+-- Display Entity fields that are accessible on the page
+-- Display common page elements like Title
+- Edit Block layout
+- Edit Views layout
+- Edit Views-row layout
+- Access Drupal media from editor.
+- Widgets
+-- Animated Headers
+-- Navigation Menu
+-- Facebook Widget
+-- Media Carousel (Bxslider)
+-- Blockquote (Twitter Share)
+
+
+
 - create install profile that sets up the site for use with the
 grapejs site builder tool
 

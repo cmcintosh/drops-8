@@ -61,26 +61,23 @@ $variants = {$variant_list};
 function {$theme}_preprocess_page(&$vars) {
   $current_path = \Drupal::service('path.current')->getPath()
   $active_variant = {$theme}_get_active_variant($current_path);
-  
+
 }
 
-/**
-* Implements hook_preprocess_block
-*/
-function {$theme}_preprocess_block(&$vars) { }
+
 
 /**
-* Implements hook_theme_suggestions_alter
+* Implements hook_theme_suggestions_hook_alter
 */
-function {$theme}_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-  if (in_array($hook, ['region', 'block', 'page'])) {
+function {$theme}_theme_suggestions_block_alter(array &$suggestions, array $variables) {
+
     $current_path = \Drupal::service('path.current')->getPath()
-    $active_variant = {$theme}_get_active_variant($current_path);
+
     //  check if the
     if (isset($overrides[$hook][$active_variant])) {
-      $suggestions[] = $overrides[$hook][$active_variant];
+      $suggestions[] = 'page__' . $overrides[$hook][$active_variant];
     }
-  }
+
 }
 
 /**

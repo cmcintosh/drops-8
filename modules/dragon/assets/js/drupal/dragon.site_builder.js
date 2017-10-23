@@ -18,6 +18,7 @@
     var page_content = $('body').html();
 
     var editor = grapesjs.init({
+        allowScripts: 1,
         height: '100%',
         width: '100%',
         container: 'body',
