@@ -39,8 +39,6 @@ class DrupalBlocks extends GrapesJSPluginBase implements GrapesJSPluginInterface
       $plugin_definitions = $type->getDefinitions();
 
       foreach($plugin_definitions as $id => $definition) {
-
-
         $plugin = $type->createInstance($id, []);
         $build = $plugin->build();
         $suggestions = $this->getSuggestions($id);
@@ -99,7 +97,7 @@ class DrupalBlocks extends GrapesJSPluginBase implements GrapesJSPluginInterface
           $template = $suggestion;
         }
       }
-      
+
       return $template;
     }
 

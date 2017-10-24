@@ -36,8 +36,7 @@ class DrupalStorage extends GrapesJSPluginBase implements GrapesJSPluginInterfac
       $path = \Drupal::service('path.current')->getPath();
       $path_args = explode('/', $path);
       $a = array_shift($path_args); // first is blank
-      // array_pop($path_args); // Remove layout
-
+      
       $suggestions = ['page'] + theme_get_suggestions($path_args, 'page', '--');
 
       if (\Drupal::service('path.matcher')->isFrontPage()) {
@@ -49,13 +48,11 @@ class DrupalStorage extends GrapesJSPluginBase implements GrapesJSPluginInterfac
       $theme_path = drupal_get_path('theme', $current_theme);
       $existing_templates = [];
       foreach($suggestions as &$suggestion) {
-
         $suggestion = str_replace('--%', '', $suggestion);
-
         if ($this->templateExists($theme_path, $suggestion . '.html.twig')) {
           $existing_templates[] = $suggestion . '.html.twig';
         }
-        else if ($entity = entity_load('template', $suggestion . '.html.twig')) {
+        else if ($entity = entity_load('template', $current_theme . '-' . $suggestion . '.html.twig')) {
           $existing_templates[] = $suggestion . '.html.twig';
         }
       }
